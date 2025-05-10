@@ -1,0 +1,31 @@
+image: python:3.9-slim # You can use a newer version if needed
+
+stages:
+  - lint
+  - test
+
+before_script:
+  - pip install --upgrade pip
+  - echo "Contents of requirements.txt before install:" # Debugging aid
+  - cat requirements.txt # Debugging aid
+  - pip install -r requirements.txt # Install application dependencies
+  # Install tools needed for CI jobs directly here
+  - pip install flake8 pytest httpx 
+
+flake8_check:
+  stage: lint
+  script:
+    - echo "Running Flake8..."
+    # TODO: Add the command to run Flake8 on the entire project.
+    # Hint: flake8 .
+    - flake8 . # Assuming students will fill this in or you provide it.
+  allow_failure: false # The pipeline will fail if Flake8 finds issues
+
+pytest_run:
+  stage: test
+  script:
+    - echo "Running Pytest..."
+    # TODO: Add the command to run Pytest.
+    # Hint: pytest tests/ (if tests are in a 'tests' directory) or just 'pytest'
+    - pytest tests/ # Assuming students will fill this in or you provide it.
+  allow_failure: false # The pipeline will fail if any tests fail
