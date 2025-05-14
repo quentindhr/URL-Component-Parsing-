@@ -16,6 +16,7 @@ flake8_check:
   stage: lint
   script:
     - echo "Running Flake8..."
+    - echo "Contents of requirements.txt after install:" # Debugging aid
     # TODO: Add the command to run Flake8 on the entire project.
     # Hint: flake8 .
     - flake8 . # Assuming students will fill this in or you provide it.

@@ -130,7 +130,7 @@ Notre application décomposera des URLs.
     pip-audit -r requirements.txt
     ```
 4.  **Analysez les résultats.**
-
+No known vulnerabilities found 
 ---
 
 ## Partie 5 : Analyse Statique de Sécurité (SAST) avec Bandit
@@ -144,7 +144,24 @@ Notre application décomposera des URLs.
     bandit -r . -x venv
     ```
 3.  **Analysez les résultats.**
+Code scanned:
+        Total lines of code: 580521
+        Total lines skipped (#nosec): 6
 
+Run metrics:
+        Total issues (by severity):
+                Undefined: 0
+                Low: 3430
+                Medium: 85
+                High: 41
+        Total issues (by confidence):
+                Undefined: 0
+                Low: 2
+                Medium: 45
+                High: 3509
+Files skipped (0):
+
+Le code analysé est volumineux et présente un certain nombre d'issues potentielles, principalement de faible sévérité et avec une confiance élevée de la part de l'outil d'analyse.
 ---
 
 ## Partie 6 : Intégration Continue avec GitLab CI
