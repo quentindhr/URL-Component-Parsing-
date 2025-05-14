@@ -1,12 +1,14 @@
-from fastapi import FastAPI, Body, status, HTTPException
-from pydantic import BaseModel, HttpUrl, Field
+from fastapi import FastAPI, Body, status
+from pydantic import BaseModel, HttpUrl
 from urllib.parse import urlparse, parse_qs, ParseResult
 
 app = FastAPI()
 
+
 # --- Pydantic Models ---
 class URLParseRequest(BaseModel):
-    url: HttpUrl # Pydantic validates basic URL structure
+    url: HttpUrl
+
 
 class URLParseResponse(BaseModel):
     original_url: str
@@ -15,90 +17,57 @@ class URLParseResponse(BaseModel):
     hostname: str | None = None
     port: int | None = None
     path: str | None = None
-    query_string: str | None = None # The raw query string
-    query_params: dict[str, list[str]] | None = None # Parsed query parameters
+    query_string: str | None = None
+    query_params: dict[str, list[str]] | None = None
     fragment: str | None = None
 
 
 # --- Business Logic ---
 def parse_url_components(url_to_parse: str) -> URLParseResponse:
-    """
-    Parses a given URL string into its components.
-    STUDENTS TO COMPLETE THIS FUNCTION.
-    """
+    parsed_result: ParseResult = urlparse(url_to_parse)
 
-
-    # TODO 1: Use `urllib.parse.urlparse()` on the `url_to_parse` string.
-    #          This will return a `ParseResult` object (typically a named tuple).
-    #          Store this result in a variable (e.g., `parsed_result`).
-    # Example: parsed_result: ParseResult = urlparse(url_to_parse)
-    parsed_result: ParseResult = urlparse(url_to_parse) # Placeholder for students to implement
-    
-    # TODO 2: Extract individual components from `parsed_result`.
-    #          - scheme (e.g., `parsed_result.scheme`)
-    #          - netloc (e.g., `parsed_result.netloc`)
-    #          - path (e.g., `parsed_result.path`)
-    #          - query (this is the raw query string, e.g., `parsed_result.query`)
-    #          - fragment (e.g., `parsed_result.fragment`)
-    
-    # Placeholder assignments
     scheme = parsed_result.scheme
     netloc = parsed_result.netloc
     path = parsed_result.path
     raw_query_string = parsed_result.query
     fragment = parsed_result.fragment
-    
-    # TODO 3: Extract hostname and port from the `netloc`.
-    #          The `parsed_result` object (from `urlparse`) has `.hostname` and `.port` attributes
-    #          that are convenient for this. They can be `None`.
-    #          Store them in `hostname_val` and `port_val`.
+
     hostname_val = parsed_result.hostname
-    port_val = parsed_result.port 
+    port_val = parsed_result.port
 
-    
-
-    # TODO 4: Parse the `raw_query_string` into a dictionary of query parameters.
-    #          Use `urllib.parse.parse_qs(raw_query_string)`.
-    #          This function returns a dictionary where keys are parameter names
-    #          and values are lists of strings (as a parameter can appear multiple times).
-    #          Store this in `parsed_query_params`. If `raw_query_string` is empty,
-    #          `parse_qs` will return an empty dictionary, which is fine.
-
-    raw_query_string = parsed_result.query
-    parsed_query_params = {
-        k: v if len(v) > 1 else v[0] for k, v in parse_qs(raw_query_string).items()
-    }
-
+    parsed_query_params = parse_qs(raw_query_string)
+    parsed_query_params = (
+        parsed_query_params if parsed_query_params else None
+    )
 
     return URLParseResponse(
         original_url=url_to_parse,
-        scheme=scheme, # TODO: Replace with extracted value
-        netloc=netloc, # TODO: Replace with extracted value
-        hostname=hostname_val, # TODO: Replace with extracted value
-        port=port_val, # TODO: Replace with extracted value
-        path=path, # TODO: Replace with extracted value
-        query_string=raw_query_string if raw_query_string else None, # TODO: Replace with extracted value
-        query_params=parsed_query_params if parsed_query_params else None, # TODO: Replace with extracted value
-        fragment=fragment if fragment else None # TODO: Replace with extracted value
+        scheme=scheme,
+        netloc=netloc,
+        hostname=hostname_val,
+        port=port_val,
+        path=path,
+        query_string=raw_query_string or None,
+        query_params=parsed_query_params,
+        fragment=fragment or None
     )
 
-# --- API Endpoints ---
-@app.post("/parse_url", response_model=URLParseResponse, status_code=status.HTTP_200_OK)
-async def parse_url_endpoint(payload: URLParseRequest = Body(...)):
-    # TODO: Call `parse_url_components` with `str(payload.url)` 
-    #       (Pydantic's HttpUrl needs to be converted to string for urlparse).
-    #       Return the result.
-    
-    # Placeholder - students to implement the call
 
-    
-    
+# --- API Endpoints ---
+@app.post(
+    "/parse_url",
+    response_model=URLParseResponse,
+    status_code=status.HTTP_200_OK
+)
+async def parse_url_endpoint(payload: URLParseRequest = Body(...)):
     parsed_data = parse_url_components(str(payload.url))
     return parsed_data
+
 
 @app.get("/health_url_parser")
 async def health_check_url_parser():
     return {"status_url_parser": "ok"}
+
 
 # For running with `python main.py`
 if __name__ == "__main__":
