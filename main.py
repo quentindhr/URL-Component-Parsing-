@@ -26,12 +26,14 @@ def parse_url_components(url_to_parse: str) -> URLParseResponse:
     Parses a given URL string into its components.
     STUDENTS TO COMPLETE THIS FUNCTION.
     """
+
+
     # TODO 1: Use `urllib.parse.urlparse()` on the `url_to_parse` string.
     #          This will return a `ParseResult` object (typically a named tuple).
     #          Store this result in a variable (e.g., `parsed_result`).
     # Example: parsed_result: ParseResult = urlparse(url_to_parse)
-    parsed_result: ParseResult = None # Placeholder for students to implement
-
+    parsed_result: ParseResult = urlparse(url_to_parse) # Placeholder for students to implement
+    
     # TODO 2: Extract individual components from `parsed_result`.
     #          - scheme (e.g., `parsed_result.scheme`)
     #          - netloc (e.g., `parsed_result.netloc`)
@@ -40,19 +42,20 @@ def parse_url_components(url_to_parse: str) -> URLParseResponse:
     #          - fragment (e.g., `parsed_result.fragment`)
     
     # Placeholder assignments
-    scheme = None
-    netloc = None
-    path = None
-    raw_query_string = None
-    fragment = None
+    scheme = parsed_result.scheme
+    netloc = parsed_result.netloc
+    path = parsed_result.path
+    raw_query_string = parsed_result.query
+    fragment = parsed_result.fragment
     
     # TODO 3: Extract hostname and port from the `netloc`.
     #          The `parsed_result` object (from `urlparse`) has `.hostname` and `.port` attributes
     #          that are convenient for this. They can be `None`.
     #          Store them in `hostname_val` and `port_val`.
-    hostname_val = None
-    port_val = None
+    hostname_val = parsed_result.hostname
+    port_val = parsed_result.port 
 
+    
 
     # TODO 4: Parse the `raw_query_string` into a dictionary of query parameters.
     #          Use `urllib.parse.parse_qs(raw_query_string)`.
@@ -60,7 +63,11 @@ def parse_url_components(url_to_parse: str) -> URLParseResponse:
     #          and values are lists of strings (as a parameter can appear multiple times).
     #          Store this in `parsed_query_params`. If `raw_query_string` is empty,
     #          `parse_qs` will return an empty dictionary, which is fine.
-    parsed_query_params = {}
+
+    raw_query_string = parsed_result.query
+    parsed_query_params = {
+        k: v if len(v) > 1 else v[0] for k, v in parse_qs(raw_query_string).items()
+    }
 
 
     return URLParseResponse(
@@ -83,6 +90,9 @@ async def parse_url_endpoint(payload: URLParseRequest = Body(...)):
     #       Return the result.
     
     # Placeholder - students to implement the call
+
+    
+    
     parsed_data = parse_url_components(str(payload.url))
     return parsed_data
 

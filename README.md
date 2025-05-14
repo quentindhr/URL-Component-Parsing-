@@ -2,72 +2,68 @@
 
 ## Description
 
-(TO BE COMPLETED BY STUDENTS: Briefly describe the project - e.g., an API that takes a URL string as input and breaks it down into its constituent parts like scheme, hostname, port, path, query parameters, and fragment.)
+Cette application est une API qui prend une URL en entrée et la décompose en ses différents composants tels que le schéma, le nom d'hôte, le port, le chemin, les paramètres de requête et le fragment.
 
 ## Prerequisites
 
-(TO BE COMPLETED BY STUDENTS: List what is needed to run this project locally, e.g., Python 3.8+, pip.)
+Pour exécuter ce projet localement, vous aurez besoin de :
+- Python 3.8 ou supérieur
+- pip
 
 ## Installation
 
-1.  Clone this repository:
+1. Clonez ce dépôt :
     ```bash
-    # git clone <repository_url>
-    # cd <repository_name>
+    git clone <repository_url>
+    cd <repository_name>
     ```
-2.  Create and activate a Python virtual environment:
+2. Créez et activez un environnement virtuel Python :
     ```bash
     python -m venv venv
-    # On macOS/Linux:
+    # Sur macOS/Linux :
     source venv/bin/activate
-    # On Windows (PowerShell/cmd):
-    # venv\Scripts\activate
+    # Sur Windows (PowerShell/cmd) :
+    venv\Scripts\activate
     ```
-3.  Install the required dependencies:
+3. Installez les dépendances requises :
     ```bash
     pip install -r requirements.txt
     ```
 
 ## Running the Application
 
-To run the FastAPI application locally using Uvicorn:
+Pour exécuter l'application FastAPI localement avec Uvicorn :
 ```bash
-uvicorn main:app --reload
-```
+uvicorn main\:app --reload
 
-The application will typically be available at http://127.0.0.1:8000. The interactive API documentation (Swagger UI) can be found at http://127.0.0.1:8000/docs.
+L'application sera généralement disponible à l'adresse http://127.0.0.1:8000. La documentation interactive de l'API (Swagger UI) peut être trouvée à l'adresse http://127.0.0.1:8000/docs.
 
+API Endpoints
 
-## API Endpoints
-(TO BE COMPLETED BY STUDENTS: Describe each API endpoint, its purpose, request body, and an example of the expected JSON response.)
+POST /parse_url
 
-* POST /parse_url
-  * Description: (Students to describe: e.g., Parses the input URL into its components.)
-  * Request Body: {"url": "https://www.example.com:8080/path?param=value#frag"}
-  * Example Response (200 OK):
-  ```json
-    {
-        "original_url": "https://www.example.com:8080/path?param=value#frag",
-        "scheme": "https",
-        "netloc": "www.example.com:8080",
-        "hostname": "www.example.com",
-        "port": 8080,
-        "path": "/path",
-        "query_string": "param=value",
-        "query_params": {"param": ["value"]},
-        "fragment": "frag"
-    }
-  ```
+Description : Analyse l'URL d'entrée en ses composants.
+Request Body : {"url": "https://www.example.com:8080/path?param=value#frag"}
+Exemple de réponse (200 OK) :
+Copier
+{
+      "original_url": "https://www.example.com:8080/path?param=value#frag",
+      "scheme": "https",
+      "netloc": "www.example.com:8080",
+      "hostname": "www.example.com",
+      "port": 8080,
+      "path": "/path",
+      "query_string": "param=value",
+      "query_params": {"param": ["value"]},
+      "fragment": "frag"}
+GET /health_url_parser
 
-* GET /health_url_parser
-  * Description: (Students to describe: Health check for this API.)
-  * Response: {"status_url_parser": "ok"}
+Description : Vérification de l'état de santé de cette API.
+Réponse : {"status_url_parser": "ok"}
+Project Structure
 
-## Project Structure
-(Optional: Students can briefly describe the main files if they wish)
-
-* main.py: Contains the FastAPI application logic for the URL parser.
-* requirements.txt: Lists the Python dependencies.
-* tests/: Contains the automated tests.
-* .gitlab-ci.yml: Defines the GitLab CI/CD pipeline.
-* README.md: This file.
+main.py : Contient la logique de l'application FastAPI pour l'analyseur d'URL.
+requirements.txt : Liste les dépendances Python.
+tests/ : Contient les tests automatisés.
+.gitlab-ci.yml : Définit le pipeline CI/CD GitLab.
+README.md : Ce fichier.
