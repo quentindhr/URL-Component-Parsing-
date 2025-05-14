@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Body, status
-from pydantic import BaseModel, HttpUrl, AnyUrl
+from pydantic import BaseModel, AnyUrl
 from urllib.parse import urlparse, parse_qs, ParseResult
 
 app = FastAPI()
